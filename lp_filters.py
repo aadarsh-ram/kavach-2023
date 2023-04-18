@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
+from skimage.segmentation import clear_border
 
 def lp_filter(image):
     """
-    Applies thresholding and morphological operations to an image to remove noise and
-    isolate the license plate.
+    Applies thresholding and morphological operations to license plate
     """
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
@@ -20,4 +20,4 @@ def lp_filter(image):
         if areas[i] >= 100:
             result[labels == i + 1] = 255
     
-    return result
+    return result, clear_border(result)
